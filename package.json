@@ -1,0 +1,32 @@
+{
+  "name": "ts-tracking-number",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjbrooksjr/ts-tracking-number.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjbrooksjr/ts-tracking-number/issues"
+  },
+  "homepage": "https://github.com/rjbrooksjr/ts-tracking-number#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.0",
+    "@types/ramda": "^0.27.11",
+    "chai": "^4.2.0",
+    "eslint": "^7.5.0",
+    "mocha": "^8.0.1",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "ramda": "^0.27.0"
+  }
+}
