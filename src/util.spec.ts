@@ -1,3 +1,5 @@
+/* eslint-disable functional/functional-parameters */
+/* eslint-disable functional/no-expression-statement */
 import { Courier } from './types';
 import { couriers, getTracking, findTracking } from './util';
 import { expect } from 'chai';

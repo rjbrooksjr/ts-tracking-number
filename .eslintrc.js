@@ -9,6 +9,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier/@typescript-eslint',
+    "plugin:functional/external-recommended",
+    "plugin:functional/recommended"
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -18,6 +20,7 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
+    'functional',
   ],
   rules: {
     '@typescript-eslint/ban-ts-comment': 0,

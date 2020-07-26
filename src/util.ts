@@ -14,29 +14,24 @@ import {
   TrackingNumber
 } from './types';
 
-export const couriers: Courier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
+export const couriers: readonly Courier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
 
-const additionalCheck = (match: Partial<SerialData>) => (a: Additional): boolean => {
-  switch(a.regex_group_name) {
-    case 'ServiceType':
-      return a.lookup.some((x: Lookup) => (x as LookupServiceType).matches_regex
-          ? new RegExp((x as LookupServiceType).matches_regex).test(match.groups![a.regex_group_name])
-          // seems not required to be true? https://github.com/jkeen/tracking_number_data/issues/43
-          // : a.lookup.some((x: MatchServiceType) => x.matches === match.groups[a.regex_group_name]);
-          : true
-      );
-    case 'CountryCode':
-    case 'ShippingContainerType':
-      return a.lookup.some(x => (x as MatchCourier).matches === match.groups![a.regex_group_name]);
-    default:
-      return true;
-  }
-};
+const additionalCheck = (match: Partial<SerialData>) => (a: Additional): boolean =>
+  a.regex_group_name === 'ServiceType'
+    ? a.lookup.some((x: Lookup) => (x as LookupServiceType).matches_regex
+      ? new RegExp((x as LookupServiceType).matches_regex).test(match.groups![a.regex_group_name])
+      // seems not required to be true? https://github.com/jkeen/tracking_number_data/issues/43
+      // : a.lookup.some((x: MatchServiceType) => x.matches === match.groups[a.regex_group_name]);
+      : true
+    )
+    : a.regex_group_name === 'CountryCode' || a.regex_group_name === 'ShippingContainerType'
+      ? a.lookup.some(x => (x as MatchCourier).matches === match.groups![a.regex_group_name])
+      : true;
 
-const matchTrackingData = (trackingNumber: string, regex: string | string[]): Partial<SerialData> => {
+const matchTrackingData = (trackingNumber: string, regex: string | readonly string[]): Partial<SerialData> => {
   const r = is(String, regex)
   ? regex as string
-  : (regex as string[]).join('');
+  : (regex as readonly string[]).join('');
 
   const match = new RegExp(`\\b${r}\\b`).exec(trackingNumber.replace(/[^a-zA-Z\d]/g, ''));
 
@@ -53,7 +48,7 @@ const additional = (t: string, tracking: TrackingData): boolean => tracking.addi
 
 const dummy = (_serialData: SerialData): boolean => true;
 
-const formatList = (tracking: string): number[] => pipe(
+const formatList = (tracking: string): readonly number[] => pipe(
   split(''),
   map(
     (x: string | number) => isNaN(x as number)
@@ -62,17 +57,18 @@ const formatList = (tracking: string): number[] => pipe(
     )
 )(tracking);
 
-const toObj = (list: number[]) => Object.assign({}, list) as unknown as Record<string, string | number>;
+const toObj = (list: readonly number[]): Record<string, string | number> =>
+  Object.assign({}, list) as unknown as Record<string, string | number>;
 
 const evenKeys = (_v: number, k: number): boolean => k % 2 === 0;
 
 const oddKeys = complement(evenKeys);
 
-const getSum = (parityFn: (v: number, k: number) => boolean, tracking: number[]): number => pipe<
-  number[],
+const getSum = (parityFn: (v: number, k: number) => boolean, tracking: readonly number[]): number => pipe<
+  readonly number[],
   Record<string, string | number>,
   Record<string, number>,
-  number[],
+  readonly number[],
   number
 >(
   toObj,
@@ -94,7 +90,7 @@ const mod10 = ({ serial, checkDigit, checksum }: SerialData): boolean => {
 
 const mod7 = ({ serial, checkDigit }: SerialData): boolean => parseInt(serial) % 7 === parseInt(checkDigit);
 
-const addWeight = (weightings: number[], serial: string) => sum(
+const addWeight = (weightings: readonly number[], serial: string): number => sum(
   zip(
     serial.split('').map(s => parseInt(s)),
     weightings || []
@@ -163,15 +159,15 @@ const toTrackingNumber = (t: TrackingData, c: Courier, trackingNumber: string): 
   },
 });
 
-const getTrackingList = (searchText: string) => (trackingData: TrackingData): string[] => pipe<
+const getTrackingList = (searchText: string) => (trackingData: TrackingData): readonly string[] => pipe<
   TrackingData,
-  string | string[],
+  string | readonly string[],
   string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   any,
-  string[],
-  string[],
-  string[]
+  readonly string[],
+  readonly string[],
+  readonly string[]
 >(
   prop('regex'),
   ifElse(
@@ -185,31 +181,40 @@ const getTrackingList = (searchText: string) => (trackingData: TrackingData): st
   map(trim),
 )(trackingData);
 
-const getCourierList = (searchText: string, couriers: Courier[]) => couriers.map(
-  pipe<Courier, TrackingData[], unknown>(
+const getCourierList = (searchText: string, couriers: readonly Courier[]): readonly string[] => couriers.map(
+  pipe<Courier, readonly TrackingData[], unknown>(
     prop('tracking_numbers'),
     chain(pipe(getTrackingList(searchText), flatten)),
   )
-) as string[];
+) as readonly string[];
 
-const findTrackingMatches = (searchText: string, couriers: Courier[]): string[] => pipe<
-  string[],
-  string[],
-  string[],
-  string[],
-  string[]
+const findTrackingMatches = (searchText: string, couriers: readonly Courier[]): readonly string[] => pipe<
+  readonly string[],
+  readonly string[],
+  readonly string[],
+  readonly string[],
+  readonly string[]
 >(
   flatten,
   uniq,
-  a => filter((t: string) => none(test(new RegExp(`([a-zA-Z0-9 ]+)${t}$`)), a))(a),
-  a => filter((t: string) => none(test(new RegExp(`^${t}([a-zA-Z0-9 ]+)`)), a))(a)
+  (a: readonly string[]) => filter((t: string) =>
+    none(test(new RegExp(`([a-zA-Z0-9 ]+)${t}$`)), a)
+  // @ts-ignore Bad Dictionary Type
+  )(a) as readonly string[],
+  (a: readonly string[]) => filter((t: string) =>
+    none(test(new RegExp(`^${t}([a-zA-Z0-9 ]+)`)), a)
+  // @ts-ignore Bad Dictionary Type
+  )(a) as readonly string[]
 )(getCourierList(searchText, couriers));
 
 export const getTracking = (trackingNumber: string): TrackingNumber | undefined => {
+  // eslint-disable-next-line functional/no-loop-statement
   for (const courier of couriers) {
+    // eslint-disable-next-line functional/no-loop-statement
     for (const tn of courier.tracking_numbers) {
       const serialData = getSerialData(trackingNumber, tn);
 
+      // eslint-disable-next-line functional/no-conditional-statement
       if (serialData && validator(tn)(serialData) && additional(trackingNumber, tn)) {
         return toTrackingNumber(tn, courier, trackingNumber);
       }
@@ -217,6 +222,6 @@ export const getTracking = (trackingNumber: string): TrackingNumber | undefined 
   }
 };
 
-export const findTracking = (searchText: string): TrackingNumber[] => findTrackingMatches(searchText, couriers)
+export const findTracking = (searchText: string): readonly TrackingNumber[] => findTrackingMatches(searchText, couriers)
   .map(getTracking)
-  .filter(complement(isNil)) as TrackingNumber[];
+  .filter(complement(isNil)) as readonly TrackingNumber[];
