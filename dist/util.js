@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTracking = exports.couriers = void 0;
+exports.findTracking = exports.getTracking = exports.couriers = void 0;
 const amazon = __importStar(require("./tracking_number_data/couriers/amazon.json"));
 const dhl = __importStar(require("./tracking_number_data/couriers/dhl.json"));
 const fedex = __importStar(require("./tracking_number_data/couriers/fedex.json"));
@@ -29,21 +29,15 @@ const ups = __importStar(require("./tracking_number_data/couriers/ups.json"));
 const usps = __importStar(require("./tracking_number_data/couriers/usps.json"));
 const ramda_1 = require("ramda");
 exports.couriers = [amazon, dhl, fedex, ontrac, s10, ups, usps];
-const additionalCheck = (match) => (a) => {
-    switch (a.regex_group_name) {
-        case 'ServiceType':
-            return a.lookup.some((x) => x.matches_regex
-                ? new RegExp(x.matches_regex).test(match.groups[a.regex_group_name])
-                // seems not required to be true? https://github.com/jkeen/tracking_number_data/issues/43
-                // : a.lookup.some((x: MatchServiceType) => x.matches === match.groups[a.regex_group_name]);
-                : true);
-        case 'CountryCode':
-        case 'ShippingContainerType':
-            return a.lookup.some(x => x.matches === match.groups[a.regex_group_name]);
-        default:
-            return true;
-    }
-};
+const additionalCheck = (match) => (a) => a.regex_group_name === 'ServiceType'
+    ? a.lookup.some((x) => x.matches_regex
+        ? new RegExp(x.matches_regex).test(match.groups[a.regex_group_name])
+        // seems not required to be true? https://github.com/jkeen/tracking_number_data/issues/43
+        // : a.lookup.some((x: MatchServiceType) => x.matches === match.groups[a.regex_group_name]);
+        : true)
+    : a.regex_group_name === 'CountryCode' || a.regex_group_name === 'ShippingContainerType'
+        ? a.lookup.some(x => x.matches === match.groups[a.regex_group_name])
+        : true;
 const matchTrackingData = (trackingNumber, regex) => {
     const r = ramda_1.is(String, regex)
         ? regex
@@ -100,10 +94,13 @@ const validator = ({ validation: { checksum } }) => (checksum === null || checks
 const formatSerial = (serial, numberFormat) => numberFormat.prepend_if && new RegExp(numberFormat.prepend_if.matches_regex).test(serial)
     ? `${numberFormat.prepend_if.content}${serial}`
     : serial;
-const getSerialData = (trackingNumber, { regex, validation: { serial_number_format, checksum } }) => {
+const getSerialData = (trackingNumber, 
+// eslint-disable-next-line camelcase
+{ regex, validation: { serial_number_format, checksum } }) => {
     const trackingData = matchTrackingData(trackingNumber, regex);
     return trackingData && trackingData.serial
         ? {
+            // eslint-disable-next-line camelcase
             serial: serial_number_format
                 ? formatSerial(trackingData.serial, serial_number_format)
                 : trackingData.serial,
@@ -112,26 +109,38 @@ const getSerialData = (trackingNumber, { regex, validation: { serial_number_form
         }
         : null;
 };
-const toTrackingNumber = (t, c) => ({
+const toTrackingNumber = (t, c, trackingNumber) => ({
     name: t.name,
     trackingUrl: t.tracking_url || null,
     description: t.description || null,
+    trackingNumber: trackingNumber.replace(/[^a-zA-Z\d]/g, ''),
     // @todo add lookups
     courier: {
         name: c.name,
         code: c.courier_code,
     },
 });
+const getTrackingList = (searchText) => (trackingData) => ramda_1.pipe(ramda_1.prop('regex'), ramda_1.ifElse(ramda_1.is(String), ramda_1.identity, ramda_1.join('')), (r) => new RegExp(r, 'g'), ramda_1.flip(ramda_1.match)(searchText), ramda_1.uniq, ramda_1.map(ramda_1.trim))(trackingData);
+const getCourierList = (searchText, couriers) => couriers.map(ramda_1.pipe(ramda_1.prop('tracking_numbers'), ramda_1.chain(ramda_1.pipe(getTrackingList(searchText), ramda_1.flatten))));
+const findTrackingMatches = (searchText, couriers) => ramda_1.pipe(ramda_1.flatten, ramda_1.uniq, (a) => ramda_1.filter((t) => ramda_1.none(ramda_1.test(new RegExp(`([a-zA-Z0-9 ]+)${t}$`)), a)
+// @ts-ignore Bad Dictionary Type
+)(a), (a) => ramda_1.filter((t) => ramda_1.none(ramda_1.test(new RegExp(`^${t}([a-zA-Z0-9 ]+)`)), a)
+// @ts-ignore Bad Dictionary Type
+)(a))(getCourierList(searchText, couriers));
 exports.getTracking = (trackingNumber) => {
+    // eslint-disable-next-line functional/no-loop-statement
     for (const courier of exports.couriers) {
+        // eslint-disable-next-line functional/no-loop-statement
         for (const tn of courier.tracking_numbers) {
             const serialData = getSerialData(trackingNumber, tn);
+            // eslint-disable-next-line functional/no-conditional-statement
             if (serialData && validator(tn)(serialData) && additional(trackingNumber, tn)) {
-                return toTrackingNumber(tn, courier);
+                return toTrackingNumber(tn, courier, trackingNumber);
             }
         }
     }
 };
-// export const findTracking = (searchText: string): TrackingNumber[] => {
-// }
+exports.findTracking = (searchText) => findTrackingMatches(searchText, exports.couriers)
+    .map(exports.getTracking)
+    .filter(ramda_1.complement(ramda_1.isNil));
 //# sourceMappingURL=util.js.map

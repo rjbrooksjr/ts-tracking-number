@@ -1,74 +1,75 @@
 export declare type SerialNumberFormat = {
-    prepend_if: {
-        matches_regex: string;
-        content: string;
+    readonly prepend_if: {
+        readonly matches_regex: string;
+        readonly content: string;
     };
 };
 declare type Checksum = {
-    name: string;
-    evens_multiplier?: number;
-    odds_multiplier?: number;
-    weightings?: number[];
-    modulo1?: number;
-    modulo2?: number;
+    readonly name: string;
+    readonly evens_multiplier?: number;
+    readonly odds_multiplier?: number;
+    readonly weightings?: readonly number[];
+    readonly modulo1?: number;
+    readonly modulo2?: number;
 };
 export declare type LookupServiceType = {
-    name: string;
-    matches_regex: string;
-    description: string;
+    readonly name: string;
+    readonly matches_regex: string;
+    readonly description: string;
 };
 export declare type MatchServiceType = {
-    name: string;
-    matches: string;
+    readonly name: string;
+    readonly matches: string;
 };
 export declare type MatchCourier = {
-    matches: string;
-    country: string;
-    courier: string;
-    courier_url: string | null;
-    upu_reference_url: string;
+    readonly matches: string;
+    readonly country: string;
+    readonly courier: string;
+    readonly courier_url: string | null;
+    readonly upu_reference_url: string;
 };
 export declare type Lookup = LookupServiceType | MatchServiceType | MatchCourier;
 export declare type Additional = {
-    name: string;
-    regex_group_name: string;
-    lookup: Lookup[];
+    readonly name: string;
+    readonly regex_group_name: string;
+    readonly lookup: readonly Lookup[];
 };
 export declare type TrackingNumber = {
-    name: string;
-    trackingUrl: string | null;
-    description: string | null;
-    courier: {
-        name: string;
-        code: string;
+    readonly name: string;
+    readonly trackingNumber: string;
+    readonly trackingUrl: string | null;
+    readonly description: string | null;
+    readonly courier: {
+        readonly name: string;
+        readonly code: string;
     };
 };
 export declare type TrackingData = {
-    tracking_url?: string | null;
-    name: string;
-    description?: string;
-    regex: string | string[];
-    validation: {
-        checksum?: Checksum;
-        serial_number_format?: SerialNumberFormat;
+    readonly tracking_url?: string | null;
+    readonly name: string;
+    readonly description?: string;
+    readonly regex: string | readonly string[];
+    readonly validation: {
+        readonly checksum?: Checksum;
+        readonly serial_number_format?: SerialNumberFormat;
     };
-    test_numbers: {
-        valid: string[];
-        invalid: string[];
+    readonly test_numbers: {
+        readonly valid: readonly string[];
+        readonly invalid: readonly string[];
     };
-    additional?: Additional[];
+    readonly additional?: readonly Additional[];
 };
 export declare type Courier = {
-    name: string;
-    courier_code: string;
-    tracking_numbers: TrackingData[];
+    readonly name: string;
+    readonly courier_code: string;
+    readonly tracking_numbers: readonly TrackingData[];
 };
 export declare type SerialData = {
-    serial: string;
-    checkDigit: string;
-    checksum: Checksum;
-    groups?: {
-        [key: string]: string;
+    readonly serial: string;
+    readonly checkDigit: string;
+    readonly checksum: Checksum;
+    readonly groups?: {
+        readonly [key: string]: string;
     };
 };
 export {};
