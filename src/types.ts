@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 export type SerialNumberFormat = {
   prepend_if: {
     matches_regex: string;
