@@ -5,7 +5,7 @@ import * as ontrac from './tracking_number_data/couriers/ontrac.json';
 import * as s10 from './tracking_number_data/couriers/s10.json';
 import * as ups from './tracking_number_data/couriers/ups.json';
 import * as usps from './tracking_number_data/couriers/usps.json';
-import { is, pipe, split, map, sum, zip, multiply, complement, pickBy, values, prop, join, flip, match, uniq, trim, identity, ifElse, filter, none, test, flatten, concat, chain, reduce, mergeWith, merge, unnest } from 'ramda';
+import { is, pipe, split, map, sum, zip, multiply, complement, pickBy, values, prop, join, flip, match, uniq, trim, identity, ifElse, filter, none, test, flatten, concat, chain, reduce, mergeWith, merge, unnest, isNil } from 'ramda';
 import {
   Courier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat,
   TrackingNumber
@@ -146,10 +146,11 @@ const getSerialData = (
     : null;
 };
 
-const toTrackingNumber = (t: TrackingData, c: Courier): TrackingNumber => ({
+const toTrackingNumber = (t: TrackingData, c: Courier, trackingNumber: string): TrackingNumber => ({
   name: t.name,
   trackingUrl: t.tracking_url || null,
   description: t.description || null,
+  trackingNumber: trackingNumber.replace(/[^a-zA-Z\d]/g, ''),
   // @todo add lookups
   courier: {
     name: c.name,
@@ -172,7 +173,8 @@ const getTrackingList = (searchText: string) => (trackingData: TrackingData): st
     identity,
     join(''),
   ),
-  (r: string) => new RegExp(`\\w${r}\\w`, 'g'),
+  (r: string) => new RegExp(r, 'g'),
+  // (r: string) => new RegExp(`\\w${r}\\w`, 'g'),
   flip(match)(searchText),
   uniq,
   map(pipe<any, any>(trim)),
@@ -183,26 +185,31 @@ const getCourierList = (searchText: string, couriers: Courier[]): string[] => co
   chain(pipe(getTrackingList(searchText), flatten)),
 ));
 
+const findTrackingMatches = (searchText: string, couriers: Courier[]): string[] => pipe<
+  string[],
+  string[],
+  string[],
+  string[],
+  string[]
+>(
+  flatten,
+  uniq,
+  a => filter((t: string) => none(test(new RegExp(`([a-zA-Z0-9\ ]+)${t}$`)), a))(a),
+  a => filter((t: string) => none(test(new RegExp(`^${t}([a-zA-Z0-9\ ]+)`)), a))(a)
+)(getCourierList(searchText, couriers) as string[]);
+
 export const getTracking = (trackingNumber: string): TrackingNumber | undefined => {
   for (const courier of couriers) {
     for (const tn of courier.tracking_numbers) {
       const serialData = getSerialData(trackingNumber, tn);
 
       if (serialData && validator(tn)(serialData) && additional(trackingNumber, tn)) {
-        return toTrackingNumber(tn, courier);
+        return toTrackingNumber(tn, courier, trackingNumber);
       }
     }
   }
 };
 
-export const findTracking = (searchText: string): TrackingNumber[] => {
-  const numbers: string[] = pipe<any, any, any, any>(
-    flatten,
-    uniq,
-    a => filter((t: string) => none(test(new RegExp(`^${t}([a-zA-Z0-9]+)`)), a))(a)
-  )(getCourierList(searchText, couriers));
-
-  console.log('FOUND', numbers);
-
-  return [];
-};
+export const findTracking = (searchText: string) => findTrackingMatches(searchText, couriers)
+  .map(getTracking)
+  .filter(complement(isNil)) as TrackingNumber[];

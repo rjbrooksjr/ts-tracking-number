@@ -43,6 +43,7 @@ export type Additional = {
 
 export type TrackingNumber = {
   name: string;
+  trackingNumber: string;
   trackingUrl: string | null;
   description: string | null;
   courier: {

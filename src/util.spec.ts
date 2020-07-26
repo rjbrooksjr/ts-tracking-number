@@ -8,7 +8,7 @@ import { expect } from 'chai';
 //       describe(trackingNumber.name, () => {
 //         it('Choses the correct courier', done => {
 //           trackingNumber.test_numbers.valid.map(n => {
-//             expect(getTracking(n)!.courier.code).to.eq(courier.courier_code);
+//             // expect(getTracking(n)!.courier.code).to.eq(courier.courier_code);
 //           })
 //           done();
 //         });
@@ -26,4 +26,4 @@ import { expect } from 'chai';
 //   })
 // });
 
-console.log(findTracking('USPS tracking number: 9400111202555842332669'));
+console.log(findTracking('USPS tracking number: 9400111202555842332669, but 9261292700768711948020 is bad and 7112 3456 7891 2345 6787 is good'));
