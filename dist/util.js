@@ -1,13 +1,32 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTracking = exports.couriers = void 0;
-const amazon = require("../data/tracking_number_data/couriers/amazon.json");
-const dhl = require("../data/tracking_number_data/couriers/dhl.json");
-const fedex = require("../data/tracking_number_data/couriers/fedex.json");
-const ontrac = require("../data/tracking_number_data/couriers/ontrac.json");
-const s10 = require("../data/tracking_number_data/couriers/s10.json");
-const ups = require("../data/tracking_number_data/couriers/ups.json");
-const usps = require("../data/tracking_number_data/couriers/usps.json");
+const amazon = __importStar(require("./tracking_number_data/couriers/amazon.json"));
+const dhl = __importStar(require("./tracking_number_data/couriers/dhl.json"));
+const fedex = __importStar(require("./tracking_number_data/couriers/fedex.json"));
+const ontrac = __importStar(require("./tracking_number_data/couriers/ontrac.json"));
+const s10 = __importStar(require("./tracking_number_data/couriers/s10.json"));
+const ups = __importStar(require("./tracking_number_data/couriers/ups.json"));
+const usps = __importStar(require("./tracking_number_data/couriers/usps.json"));
 const ramda_1 = require("ramda");
 exports.couriers = [amazon, dhl, fedex, ontrac, s10, ups, usps];
 const additionalCheck = (match) => (a) => {
@@ -115,3 +134,4 @@ exports.getTracking = (trackingNumber) => {
 };
 // export const findTracking = (searchText: string): TrackingNumber[] => {
 // }
+//# sourceMappingURL=util.js.map

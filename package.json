@@ -2,10 +2,12 @@
   "name": "ts-tracking-number",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/util.js",
+  "module": "./dist/util.js",
+  "types": "./dist/util.d.js",
   "scripts": {
     "test": "mocha --exit -r ts-node/register src/**/*.spec.ts",
-    "build": "rm -rf lib/* && tsc"
+    "build": "rm -rf ./dist && yarn test && tsc -p ./tsconfig.json"
   },
   "repository": {
     "type": "git",

@@ -1,10 +1,10 @@
-import * as amazon from '../data/tracking_number_data/couriers/amazon.json';
-import * as dhl from '../data/tracking_number_data/couriers/dhl.json';
-import * as fedex from '../data/tracking_number_data/couriers/fedex.json';
-import * as ontrac from '../data/tracking_number_data/couriers/ontrac.json';
-import * as s10 from '../data/tracking_number_data/couriers/s10.json';
-import * as ups from '../data/tracking_number_data/couriers/ups.json';
-import * as usps from '../data/tracking_number_data/couriers/usps.json';
+import * as amazon from './tracking_number_data/couriers/amazon.json';
+import * as dhl from './tracking_number_data/couriers/dhl.json';
+import * as fedex from './tracking_number_data/couriers/fedex.json';
+import * as ontrac from './tracking_number_data/couriers/ontrac.json';
+import * as s10 from './tracking_number_data/couriers/s10.json';
+import * as ups from './tracking_number_data/couriers/ups.json';
+import * as usps from './tracking_number_data/couriers/usps.json';
 import { is, pipe, split, map, sum, zip, multiply, complement, pickBy, values } from 'ramda';
 import {
   Courier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat,

@@ -3,11 +3,19 @@
     "target": "es2018",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "./lib",
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
+    "strictNullChecks": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }

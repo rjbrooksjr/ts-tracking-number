@@ -72,3 +72,4 @@ export declare type SerialData = {
     };
 };
 export {};
+//# sourceMappingURL=types.d.ts.map
