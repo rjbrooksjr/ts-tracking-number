@@ -1,7 +1,18 @@
 {
   "name": "ts-tracking-number",
   "version": "1.0.0",
-  "description": "Detect and validate tracking numbers from major cariers.",
+  "description": "Detect and validate tracking numbers for USPS, UPS, FedEx, and other major cariers.",
+  "keywords": [
+    "tracking number",
+    "track package",
+    "usps",
+    "ups",
+    "fedex",
+    "amazon",
+    "dhl",
+    "ontrac",
+    "s10"
+  ],
   "main": "./dist/util.js",
   "module": "./dist/util.js",
   "types": "./dist/util.d.js",
@@ -14,7 +25,10 @@
     "type": "git",
     "url": "git+https://github.com/rjbrooksjr/ts-tracking-number.git"
   },
-  "author": "",
+  "author": {
+    "name": "Rich Brooks",
+    "email": "rbrooks@gmail.com"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rjbrooksjr/ts-tracking-number/issues"
