@@ -7,7 +7,7 @@ import * as ups from './tracking_number_data/couriers/ups.json';
 import * as usps from './tracking_number_data/couriers/usps.json';
 import {
   is, pipe, split, map, sum, zip, multiply, complement, pickBy, values, prop, join, flip, match, uniq, trim,
-  identity, ifElse, filter, none, test, flatten, chain, isNil
+  identity, ifElse, filter, none, test, flatten, chain, isNil, replace
 } from 'ramda';
 import {
   Courier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat,
@@ -177,8 +177,8 @@ const getTrackingList = (searchText: string) => (trackingData: TrackingData): re
   ),
   (r: string) => new RegExp(r, 'g'),
   flip(match)(searchText),
+  map(replace(/[^a-zA-Z\d]/g, '')),
   uniq,
-  map(trim),
 )(trackingData);
 
 const getCourierList = (searchText: string, couriers: readonly Courier[]): readonly string[] => couriers.map(

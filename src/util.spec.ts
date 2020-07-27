@@ -31,7 +31,7 @@ couriers.map((courier: Courier) => {
 describe('Tracking Search', () => {
   it('Finds valid tracking codes in text', done => {
     const text = 'USPS tracking number: 9400111202555842332669, but 9261292700768711948020 is bad and '
-      + '7112 3456 7891 2345 6787 is good';
+      + '7112 3456 7891 2345 6787 is good and this is a dupe 94001 11202 55584 2332669';
     expect(findTracking(text)).to.have.length(2);
     done();
   });
