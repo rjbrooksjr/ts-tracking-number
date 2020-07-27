@@ -6,7 +6,7 @@ import * as s10 from './tracking_number_data/couriers/s10.json';
 import * as ups from './tracking_number_data/couriers/ups.json';
 import * as usps from './tracking_number_data/couriers/usps.json';
 import {
-  is, pipe, split, map, sum, zip, multiply, complement, pickBy, values, prop, join, flip, match, uniq, trim,
+  is, pipe, split, map, sum, zip, multiply, complement, pickBy, values, prop, join, flip, match, uniq,
   identity, ifElse, filter, none, test, flatten, chain, isNil, replace
 } from 'ramda';
 import {
