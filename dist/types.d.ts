@@ -34,17 +34,6 @@ export declare type Additional = {
     readonly regex_group_name: string;
     readonly lookup: readonly Lookup[];
 };
-export declare type Courier = {
-    readonly name: string;
-    readonly code: string;
-};
-export declare type TrackingNumber = {
-    readonly name: string;
-    readonly trackingNumber: string;
-    readonly trackingUrl: string | null;
-    readonly description: string | null;
-    readonly courier: Courier;
-};
 export declare type TrackingData = {
     readonly tracking_url?: string | null;
     readonly name: string;
