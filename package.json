@@ -15,7 +15,7 @@
   ],
   "main": "./dist/util.js",
   "module": "./dist/util.js",
-  "types": "./dist/util.d.ts",
+  "types": "./dist/types.d.ts",
   "scripts": {
     "build": "rm -rf ./dist && yarn test && tsc -p ./tsconfig.json",
     "lint": " yarn eslint --cache --ext .ts src/",
