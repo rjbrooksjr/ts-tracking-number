@@ -1,6 +1,6 @@
 {
   "name": "ts-tracking-number",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Detect and validate tracking numbers for USPS, UPS, FedEx, and other major cariers.",
   "keywords": [
     "tracking number",
@@ -15,7 +15,7 @@
   ],
   "main": "./dist/util.js",
   "module": "./dist/util.js",
-  "types": "./dist/util.d.js",
+  "types": "./dist/util.d.ts",
   "scripts": {
     "build": "rm -rf ./dist && yarn test && tsc -p ./tsconfig.json",
     "lint": " yarn eslint --cache --ext .ts src/",
