@@ -1,6 +1,6 @@
 {
   "name": "ts-tracking-number",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Detect and validate tracking numbers for USPS, UPS, FedEx, and other major cariers.",
   "keywords": [
     "tracking number",
