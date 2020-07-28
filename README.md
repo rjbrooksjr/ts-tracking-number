@@ -4,11 +4,11 @@ This package will validate individual tracking numbers or search for valid track
 Current supported Couriers are USPS, UPS, FedEx, DHL, OnTrac, Amazon Logistics, and national postal services using the S10 standard.
 
 ## Install
-`npm install rjbrooksjr/ts-tracking-number`
+`npm install ts-tracking-number`
 
 or
 
-`yarn add rjbrooksjr/ts-tracking-number`
+`yarn add ts-tracking-number`
 
 ## Usage
 
