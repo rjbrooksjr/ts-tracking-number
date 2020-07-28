@@ -1,10 +1,10 @@
 /* eslint-disable functional/functional-parameters */
 /* eslint-disable functional/no-expression-statement */
-import { Courier } from './types';
+import { TrackingCourier } from './types';
 import { couriers, getTracking, findTracking } from './util';
 import { expect } from 'chai';
 
-couriers.map((courier: Courier) => {
+couriers.map((courier: TrackingCourier) => {
   describe(courier.name, () => {
     courier.tracking_numbers.map(trackingNumber => {
       describe(trackingNumber.name, () => {

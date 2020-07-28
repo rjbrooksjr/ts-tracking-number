@@ -43,15 +43,17 @@ export type Additional = {
   readonly lookup: readonly Lookup[];
 };
 
+export type Courier = {
+  readonly name: string;
+  readonly code: string;
+}
+
 export type TrackingNumber = {
   readonly name: string;
   readonly trackingNumber: string;
   readonly trackingUrl: string | null;
   readonly description: string | null;
-  readonly courier: {
-    readonly name: string;
-    readonly code: string;
-  };
+  readonly courier: Courier;
 }
 
 export type TrackingData = {
@@ -67,7 +69,7 @@ export type TrackingData = {
   readonly additional?: readonly Additional[];
 };
 
-export type Courier = {
+export type TrackingCourier = {
   readonly name: string;
   readonly courier_code: string;
   readonly tracking_numbers: readonly TrackingData[];

@@ -10,11 +10,11 @@ import {
   identity, ifElse, filter, none, test, flatten, chain, isNil, replace
 } from 'ramda';
 import {
-  Courier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat,
+  TrackingCourier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat,
   TrackingNumber
 } from './types';
 
-export const couriers: readonly Courier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
+export const couriers: readonly TrackingCourier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
 
 const additionalCheck = (match: Partial<SerialData>) => (a: Additional): boolean =>
   a.regex_group_name === 'ServiceType'
@@ -147,7 +147,7 @@ const getSerialData = (
     : null;
 };
 
-const toTrackingNumber = (t: TrackingData, c: Courier, trackingNumber: string): TrackingNumber => ({
+const toTrackingNumber = (t: TrackingData, c: TrackingCourier, trackingNumber: string): TrackingNumber => ({
   name: t.name,
   trackingUrl: t.tracking_url || null,
   description: t.description || null,
@@ -181,14 +181,14 @@ const getTrackingList = (searchText: string) => (trackingData: TrackingData): re
   uniq,
 )(trackingData);
 
-const getCourierList = (searchText: string, couriers: readonly Courier[]): readonly string[] => couriers.map(
-  pipe<Courier, readonly TrackingData[], unknown>(
+const getCourierList = (searchText: string, couriers: readonly TrackingCourier[]): readonly string[] => couriers.map(
+  pipe<TrackingCourier, readonly TrackingData[], unknown>(
     prop('tracking_numbers'),
     chain(pipe(getTrackingList(searchText), flatten)),
   )
 ) as readonly string[];
 
-const findTrackingMatches = (searchText: string, couriers: readonly Courier[]): readonly string[] => pipe<
+const findTrackingMatches = (searchText: string, couriers: readonly TrackingCourier[]): readonly string[] => pipe<
   readonly string[],
   readonly string[],
   readonly string[],
