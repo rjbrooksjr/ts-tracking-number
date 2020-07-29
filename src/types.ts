@@ -68,3 +68,16 @@ export type SerialData = {
   readonly checksum: Checksum;
   readonly groups?: { readonly [key: string]: string };
 };
+
+export type Courier = {
+  readonly name: string;
+  readonly code: string;
+}
+
+export type TrackingNumber = {
+  readonly name: string;
+  readonly trackingNumber: string;
+  readonly trackingUrl: string | null;
+  readonly description: string | null;
+  readonly courier: Courier;
+}

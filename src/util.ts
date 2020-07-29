@@ -10,23 +10,11 @@ import {
   identity, ifElse, filter, none, test, flatten, chain, isNil, replace
 } from 'ramda';
 import {
-  TrackingCourier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat
+  TrackingCourier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat,
+  Courier, TrackingNumber
 } from './types';
 
-export { amazon, dhl, fedex, ontrac, s10, ups, usps };
-
-export type Courier = {
-  readonly name: string;
-  readonly code: string;
-}
-
-export type TrackingNumber = {
-  readonly name: string;
-  readonly trackingNumber: string;
-  readonly trackingUrl: string | null;
-  readonly description: string | null;
-  readonly courier: Courier;
-}
+export { amazon, dhl, fedex, ontrac, s10, ups, usps, TrackingCourier, TrackingData, Courier, TrackingNumber };
 
 export const allCouriers: readonly TrackingCourier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
 
