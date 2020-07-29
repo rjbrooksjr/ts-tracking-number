@@ -67,10 +67,10 @@ const tracking = findTracking(text);
 
 ```
 
-### Specifying Desired Cariers
-Optionally you may specify which carrier(s) to retrieve in either `getTracking` or `findTracking` by passing an array of cariers to the function.
+### Specifying Desired Courier
+Optionally you may specify which carrier(s) to retrieve in either `getTracking` or `findTracking` by passing an array of couriers to the function.
 
-Filterable cariers are `amazon`, `dhl`, `fedex`, `ontrac`, `s10`, `ups`, `usps`
+Filterable couriers are `amazon`, `dhl`, `fedex`, `ontrac`, `s10`, `ups`, `usps`
 
 ```
 import { getTracking, findTracking, ups, fedex } from 'ts-tracking-number';
