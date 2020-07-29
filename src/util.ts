@@ -13,6 +13,8 @@ import {
   TrackingCourier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat
 } from './types';
 
+export { amazon, dhl, fedex, ontrac, s10, ups, usps };
+
 export type Courier = {
   readonly name: string;
   readonly code: string;
@@ -26,7 +28,7 @@ export type TrackingNumber = {
   readonly courier: Courier;
 }
 
-export const couriers: readonly TrackingCourier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
+export const allCouriers: readonly TrackingCourier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
 
 const additionalCheck = (match: Partial<SerialData>) => (a: Additional): boolean =>
   a.regex_group_name === 'ServiceType'
@@ -219,9 +221,10 @@ const findTrackingMatches = (searchText: string, couriers: readonly TrackingCour
   )(a) as readonly string[]
 )(getCourierList(searchText, couriers));
 
-export const getTracking = (trackingNumber: string): TrackingNumber | undefined => {
+export const getTracking =
+  (trackingNumber: string, couriers?: readonly TrackingCourier[]): TrackingNumber | undefined => {
   // eslint-disable-next-line functional/no-loop-statement
-  for (const courier of couriers) {
+  for (const courier of couriers || allCouriers) {
     // eslint-disable-next-line functional/no-loop-statement
     for (const tn of courier.tracking_numbers) {
       const serialData = getSerialData(trackingNumber, tn);
@@ -234,6 +237,7 @@ export const getTracking = (trackingNumber: string): TrackingNumber | undefined 
   }
 };
 
-export const findTracking = (searchText: string): readonly TrackingNumber[] => findTrackingMatches(searchText, couriers)
-  .map(getTracking)
-  .filter(complement(isNil)) as readonly TrackingNumber[];
+export const findTracking = (searchText: string, couriers?: readonly TrackingCourier[]): readonly TrackingNumber[] =>
+  findTrackingMatches(searchText, couriers || allCouriers)
+    .map(t => getTracking(t, couriers || allCouriers))
+    .filter(complement(isNil)) as readonly TrackingNumber[];

@@ -19,16 +19,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findTracking = exports.getTracking = exports.couriers = void 0;
+exports.findTracking = exports.getTracking = exports.allCouriers = exports.usps = exports.ups = exports.s10 = exports.ontrac = exports.fedex = exports.dhl = exports.amazon = void 0;
 const amazon = __importStar(require("./tracking_number_data/couriers/amazon.json"));
+exports.amazon = amazon;
 const dhl = __importStar(require("./tracking_number_data/couriers/dhl.json"));
+exports.dhl = dhl;
 const fedex = __importStar(require("./tracking_number_data/couriers/fedex.json"));
+exports.fedex = fedex;
 const ontrac = __importStar(require("./tracking_number_data/couriers/ontrac.json"));
+exports.ontrac = ontrac;
 const s10 = __importStar(require("./tracking_number_data/couriers/s10.json"));
+exports.s10 = s10;
 const ups = __importStar(require("./tracking_number_data/couriers/ups.json"));
+exports.ups = ups;
 const usps = __importStar(require("./tracking_number_data/couriers/usps.json"));
+exports.usps = usps;
 const ramda_1 = require("ramda");
-exports.couriers = [amazon, dhl, fedex, ontrac, s10, ups, usps];
+exports.allCouriers = [amazon, dhl, fedex, ontrac, s10, ups, usps];
 const additionalCheck = (match) => (a) => a.regex_group_name === 'ServiceType'
     ? a.lookup.some((x) => x.matches_regex
         ? new RegExp(x.matches_regex).test(match.groups[a.regex_group_name])
@@ -127,9 +134,9 @@ const findTrackingMatches = (searchText, couriers) => ramda_1.pipe(ramda_1.flatt
 )(a), (a) => ramda_1.filter((t) => ramda_1.none(ramda_1.test(new RegExp(`^${t}([a-zA-Z0-9 ]+)`)), a)
 // @ts-ignore Bad Dictionary Type
 )(a))(getCourierList(searchText, couriers));
-exports.getTracking = (trackingNumber) => {
+exports.getTracking = (trackingNumber, couriers) => {
     // eslint-disable-next-line functional/no-loop-statement
-    for (const courier of exports.couriers) {
+    for (const courier of couriers || exports.allCouriers) {
         // eslint-disable-next-line functional/no-loop-statement
         for (const tn of courier.tracking_numbers) {
             const serialData = getSerialData(trackingNumber, tn);
@@ -140,7 +147,7 @@ exports.getTracking = (trackingNumber) => {
         }
     }
 };
-exports.findTracking = (searchText) => findTrackingMatches(searchText, exports.couriers)
-    .map(exports.getTracking)
+exports.findTracking = (searchText, couriers) => findTrackingMatches(searchText, couriers || exports.allCouriers)
+    .map(t => exports.getTracking(t, couriers || exports.allCouriers))
     .filter(ramda_1.complement(ramda_1.isNil));
 //# sourceMappingURL=util.js.map

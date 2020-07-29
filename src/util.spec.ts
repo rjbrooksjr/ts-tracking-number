@@ -1,10 +1,10 @@
 /* eslint-disable functional/functional-parameters */
 /* eslint-disable functional/no-expression-statement */
 import { TrackingCourier } from './types';
-import { couriers, getTracking, findTracking } from './util';
+import { allCouriers, getTracking, findTracking, fedex } from './util';
 import { expect } from 'chai';
 
-couriers.map((courier: TrackingCourier) => {
+allCouriers.map((courier: TrackingCourier) => {
   describe(courier.name, () => {
     courier.tracking_numbers.map(trackingNumber => {
       describe(trackingNumber.name, () => {
@@ -25,6 +25,17 @@ couriers.map((courier: TrackingCourier) => {
         });
       });
     });
+  });
+});
+
+describe('getTracking', () => {
+  it('Uses all couriers when none are specified', done => {
+    expect(getTracking('9400111202555842332669')).to.not.be.undefined;
+    done();
+  });
+  it('Uses only supplied couriers when specified', done => {
+    expect(getTracking('9400111202555842332669', [fedex])).to.be.undefined;
+    done();
   });
 });
 

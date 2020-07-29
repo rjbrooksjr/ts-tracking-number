@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("./util");
 const chai_1 = require("chai");
-util_1.couriers.map((courier) => {
+util_1.allCouriers.map((courier) => {
     describe(courier.name, () => {
         courier.tracking_numbers.map(trackingNumber => {
             describe(trackingNumber.name, () => {
@@ -23,6 +23,16 @@ util_1.couriers.map((courier) => {
                 });
             });
         });
+    });
+});
+describe('getTracking', () => {
+    it('Uses all couriers when none are specified', done => {
+        chai_1.expect(util_1.getTracking('9400111202555842332669')).to.not.be.undefined;
+        done();
+    });
+    it('Uses only supplied couriers when specified', done => {
+        chai_1.expect(util_1.getTracking('9400111202555842332669', [util_1.fedex])).to.be.undefined;
+        done();
     });
 });
 describe('Tracking Search', () => {
