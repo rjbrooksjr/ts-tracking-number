@@ -7,7 +7,7 @@ import * as ups from './tracking_number_data/couriers/ups.json';
 import * as usps from './tracking_number_data/couriers/usps.json';
 import {
   is, pipe, split, map, sum, zip, multiply, complement, pickBy, values, prop, join, flip, match, uniq,
-  identity, ifElse, filter, none, test, flatten, chain, isNil, replace
+  identity, ifElse, filter, none, test, flatten, chain, isNil, replace, reduce, reduced
 } from 'ramda';
 import {
   TrackingCourier, TrackingData, SerialData, Additional, Lookup, LookupServiceType, MatchCourier, SerialNumberFormat,
@@ -209,20 +209,21 @@ const findTrackingMatches = (searchText: string, couriers: readonly TrackingCour
   )(a) as readonly string[]
 )(getCourierList(searchText, couriers));
 
-export const getTracking =
-  (trackingNumber: string, couriers?: readonly TrackingCourier[]): TrackingNumber | undefined => {
-  // eslint-disable-next-line functional/no-loop-statement
-  for (const courier of couriers || allCouriers) {
-    // eslint-disable-next-line functional/no-loop-statement
-    for (const tn of courier.tracking_numbers) {
+const getTrackingInternal = (trackingNumber: string) => reduce(
+  (prev: unknown, courier: TrackingCourier) => (
+    prev || reduce((_: TrackingNumber | undefined, tn: TrackingData) => {
       const serialData = getSerialData(trackingNumber, tn);
 
-      // eslint-disable-next-line functional/no-conditional-statement
-      if (serialData && validator(tn)(serialData) && additional(trackingNumber, tn)) {
-        return toTrackingNumber(tn, courier, trackingNumber);
-      }
-    }
-  }
+      return (serialData && validator(tn)(serialData) && additional(trackingNumber, tn))
+        ? reduced(toTrackingNumber(tn, courier, trackingNumber))
+        : undefined
+    }, undefined, courier.tracking_numbers)
+  ),
+  undefined
+) as (couriers: readonly TrackingCourier[]) => TrackingNumber | undefined;
+
+export const getTracking = (trackingNumber: string, couriers: readonly TrackingCourier[] = allCouriers) => {
+  return getTrackingInternal(trackingNumber)(couriers)
 };
 
 export const findTracking = (searchText: string, couriers?: readonly TrackingCourier[]): readonly TrackingNumber[] =>
