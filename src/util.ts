@@ -133,7 +133,7 @@ const formatSerial = (serial: string, numberFormat: SerialNumberFormat): string 
 const getSerialData = (
   trackingNumber: string,
   // eslint-disable-next-line camelcase
-  { regex, validation: { serial_number_format, checksum }}: TrackingData
+  { regex, validation: { serial_number_format, checksum } }: TrackingData
 ): SerialData | null => {
   const trackingData = matchTrackingData(trackingNumber, regex);
 
@@ -222,9 +222,12 @@ const getTrackingInternal = (trackingNumber: string) => reduce(
   undefined
 ) as (couriers: readonly TrackingCourier[]) => TrackingNumber | undefined;
 
-export const getTracking = (trackingNumber: string, couriers: readonly TrackingCourier[] = allCouriers) => {
-  return getTrackingInternal(trackingNumber)(couriers)
-};
+export const getTracking = (
+  trackingNumber: string,
+  couriers: readonly TrackingCourier[] = allCouriers
+): TrackingNumber | undefined => (
+  getTrackingInternal(trackingNumber)(couriers)
+);
 
 export const findTracking = (searchText: string, couriers?: readonly TrackingCourier[]): readonly TrackingNumber[] =>
   findTrackingMatches(searchText, couriers || allCouriers)
