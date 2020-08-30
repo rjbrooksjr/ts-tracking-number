@@ -134,19 +134,14 @@ const findTrackingMatches = (searchText, couriers) => ramda_1.pipe(ramda_1.flatt
 )(a), (a) => ramda_1.filter((t) => ramda_1.none(ramda_1.test(new RegExp(`^${t}([a-zA-Z0-9 ]+)`)), a)
 // @ts-ignore Bad Dictionary Type
 )(a))(getCourierList(searchText, couriers));
-exports.getTracking = (trackingNumber, couriers) => {
-    // eslint-disable-next-line functional/no-loop-statement
-    for (const courier of couriers || exports.allCouriers) {
-        // eslint-disable-next-line functional/no-loop-statement
-        for (const tn of courier.tracking_numbers) {
-            const serialData = getSerialData(trackingNumber, tn);
-            // eslint-disable-next-line functional/no-conditional-statement
-            if (serialData && validator(tn)(serialData) && additional(trackingNumber, tn)) {
-                return toTrackingNumber(tn, courier, trackingNumber);
-            }
-        }
-    }
-};
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const getTrackingInternal = (trackingNumber) => ramda_1.reduce((prev, courier) => (prev || ramda_1.reduce((_, tn) => {
+    const serialData = getSerialData(trackingNumber, tn);
+    return (serialData && validator(tn)(serialData) && additional(trackingNumber, tn))
+        ? ramda_1.reduced(toTrackingNumber(tn, courier, trackingNumber))
+        : undefined;
+}, undefined, courier.tracking_numbers)), undefined);
+exports.getTracking = (trackingNumber, couriers = exports.allCouriers) => (getTrackingInternal(trackingNumber)(couriers));
 exports.findTracking = (searchText, couriers) => findTrackingMatches(searchText, couriers || exports.allCouriers)
     .map(t => exports.getTracking(t, couriers || exports.allCouriers))
     .filter(ramda_1.complement(ramda_1.isNil));

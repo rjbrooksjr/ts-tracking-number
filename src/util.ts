@@ -209,6 +209,7 @@ const findTrackingMatches = (searchText: string, couriers: readonly TrackingCour
   )(a) as readonly string[]
 )(getCourierList(searchText, couriers));
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getTrackingInternal = (trackingNumber: string) => reduce(
   (prev: unknown, courier: TrackingCourier) => (
     prev || reduce((_: TrackingNumber | undefined, tn: TrackingData) => {
@@ -216,7 +217,7 @@ const getTrackingInternal = (trackingNumber: string) => reduce(
 
       return (serialData && validator(tn)(serialData) && additional(trackingNumber, tn))
         ? reduced(toTrackingNumber(tn, courier, trackingNumber))
-        : undefined
+        : undefined;
     }, undefined, courier.tracking_numbers)
   ),
   undefined
