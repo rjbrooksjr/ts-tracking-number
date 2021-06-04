@@ -6,7 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-      submodules: recursive
+        submodules: recursive
     - name: Install modules
       run: yarn install
     - name: Run ESLint
