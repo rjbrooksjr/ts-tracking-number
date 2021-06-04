@@ -8,6 +8,6 @@ import * as usps from './tracking_number_data/couriers/usps.json';
 import { TrackingCourier, TrackingData, Courier, TrackingNumber } from './types';
 export { amazon, dhl, fedex, ontrac, s10, ups, usps, TrackingCourier, TrackingData, Courier, TrackingNumber };
 export declare const allCouriers: readonly TrackingCourier[];
-export declare const getTracking: (trackingNumber: string, couriers?: readonly TrackingCourier[] | undefined) => TrackingNumber | undefined;
+export declare const getTracking: (trackingNumber: string, couriers?: readonly TrackingCourier[]) => TrackingNumber | undefined;
 export declare const findTracking: (searchText: string, couriers?: readonly TrackingCourier[] | undefined) => readonly TrackingNumber[];
 //# sourceMappingURL=util.d.ts.map
