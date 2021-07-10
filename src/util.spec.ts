@@ -46,4 +46,12 @@ describe('Tracking Search', () => {
     expect(findTracking(text)).to.have.length(2);
     done();
   });
+
+  it('Treats new lines correctly', done => {
+    expect(findTracking('254899580324\n254899580324')).to.have.length(1);
+    expect(findTracking('254899580324\r254899580324')).to.have.length(1);
+    expect(findTracking('254899580324\r\n254899580324')).to.have.length(1);
+    expect(findTracking('254899580324\n\n254899580324')).to.have.length(1);
+    done();
+  });
 });
