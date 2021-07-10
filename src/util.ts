@@ -179,7 +179,7 @@ const getTrackingList = (searchText: string) => (trackingData: TrackingData): re
   ),
   (r: string) => new RegExp(r, 'g'),
   flip(match)(searchText),
-  map(replace(/[^a-zA-Z\d]/g, '')),
+  map(replace(/[^a-zA-Z\d\n\r]/g, '')),
   uniq,
 )(trackingData);
 
