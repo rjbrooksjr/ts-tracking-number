@@ -3,7 +3,6 @@
 import { TrackingCourier } from './types';
 import { allCouriers, getTracking, findTracking, fedex } from './util';
 import { expect } from 'chai';
-import { __ } from 'ramda';
 
 allCouriers.map((courier: TrackingCourier) => {
   describe(courier.name, () => {
