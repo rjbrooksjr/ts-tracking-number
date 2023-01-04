@@ -42,5 +42,12 @@ describe('Tracking Search', () => {
         chai_1.expect(util_1.findTracking(text)).to.have.length(2);
         done();
     });
+    it('Treats new lines correctly', done => {
+        chai_1.expect(util_1.findTracking('254899580324\n254899580324')).to.have.length(1);
+        chai_1.expect(util_1.findTracking('254899580324\r254899580324')).to.have.length(1);
+        chai_1.expect(util_1.findTracking('254899580324\r\n254899580324')).to.have.length(1);
+        chai_1.expect(util_1.findTracking('254899580324\n\n254899580324')).to.have.length(1);
+        done();
+    });
 });
 //# sourceMappingURL=util.spec.js.map

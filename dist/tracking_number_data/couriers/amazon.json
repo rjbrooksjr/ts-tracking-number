@@ -22,6 +22,22 @@
                     "TBB000000000000"
                 ]
             }
+        },
+        {
+            "name": "Amazon International",
+            "regex": [
+                "\\s*[AFC]\\s*(?<SerialNumber>([0-9]\\s*){10,10})\\s*"
+            ],
+            "validation": {},
+            "test_numbers": {
+                "valid": [
+                    "C1004444443",
+                    "C1004444444"
+                ],
+                "invalid": [
+                    "D1234567890"
+                ]
+            }
         }
     ]
 }
