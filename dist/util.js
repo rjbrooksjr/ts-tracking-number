@@ -127,7 +127,7 @@ const toTrackingNumber = (t, c, trackingNumber) => ({
         code: c.courier_code,
     },
 });
-const getTrackingList = (searchText) => (trackingData) => ramda_1.pipe(ramda_1.prop('regex'), ramda_1.ifElse(ramda_1.is(String), ramda_1.identity, ramda_1.join('')), (r) => new RegExp(r, 'g'), ramda_1.flip(ramda_1.match)(searchText), ramda_1.map(ramda_1.replace(/[^a-zA-Z\d]/g, '')), ramda_1.uniq)(trackingData);
+const getTrackingList = (searchText) => (trackingData) => ramda_1.pipe(ramda_1.prop('regex'), ramda_1.ifElse(ramda_1.is(String), ramda_1.identity, ramda_1.join('')), (r) => new RegExp(r, 'g'), ramda_1.flip(ramda_1.match)(searchText), ramda_1.map(ramda_1.replace(/[^a-zA-Z\d\n\r]/g, '')), ramda_1.uniq)(trackingData);
 const getCourierList = (searchText, couriers) => couriers.map(ramda_1.pipe(ramda_1.prop('tracking_numbers'), ramda_1.chain(ramda_1.pipe(getTrackingList(searchText), ramda_1.flatten))));
 const findTrackingMatches = (searchText, couriers) => ramda_1.pipe(ramda_1.flatten, ramda_1.uniq, (a) => ramda_1.filter((t) => ramda_1.none(ramda_1.test(new RegExp(`([a-zA-Z0-9 ]+)${t}$`)), a)
 // @ts-ignore Bad Dictionary Type
