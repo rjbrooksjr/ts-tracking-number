@@ -19,7 +19,7 @@ type Checksum = {
 export type LookupServiceType = {
   readonly name: string;
   readonly matches_regex: string;
-  readonly description: string;
+  readonly description?: string;
 };
 
 export type MatchServiceType = {
@@ -30,9 +30,9 @@ export type MatchServiceType = {
 export type MatchCourier = {
   readonly matches: string;
   readonly country: string;
-  readonly courier: string;
-  readonly courier_url: string | null;
-  readonly upu_reference_url: string;
+  readonly courier?: string;
+  readonly courier_url?: string | null;
+  readonly upu_reference_url?: string;
 };
 
 export type Lookup = LookupServiceType | MatchServiceType | MatchCourier;
@@ -52,7 +52,10 @@ export type TrackingData = {
     readonly checksum?: Checksum;
     readonly serial_number_format?: SerialNumberFormat;
   };
-  readonly test_numbers: { readonly valid: readonly string[], readonly invalid: readonly string[] };
+  readonly test_numbers: {
+    readonly valid: readonly string[];
+    readonly invalid: readonly string[];
+  };
   readonly additional?: readonly Additional[];
 };
 
@@ -72,7 +75,7 @@ export type SerialData = {
 export type Courier = {
   readonly name: string;
   readonly code: string;
-}
+};
 
 export type TrackingNumber = {
   readonly name: string;
@@ -80,4 +83,4 @@ export type TrackingNumber = {
   readonly trackingUrl: string | null;
   readonly description: string | null;
   readonly courier: Courier;
-}
+};

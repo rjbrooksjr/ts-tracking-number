@@ -4,12 +4,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: Install modules
-      run: yarn install
-    - name: Run ESLint
-      run: yarn lint
-    - name: Run tests
-      run: yarn test
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Install modules
+        run: yarn install
+      - name: Run ESLint
+        run: yarn lint
+      - name: Run tests
+        run: yarn test
