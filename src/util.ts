@@ -1,6 +1,10 @@
 import * as amazon from './tracking_number_data/couriers/amazon.json';
+import * as canadapost from './tracking_number_data/couriers/canadapost.json';
+import * as dpd from './tracking_number_data/couriers/dpd.json';
 import * as dhl from './tracking_number_data/couriers/dhl.json';
 import * as fedex from './tracking_number_data/couriers/fedex.json';
+import * as landmark from './tracking_number_data/couriers/landmark.json';
+import * as lasership from './tracking_number_data/couriers/lasership.json';
 import * as ontrac from './tracking_number_data/couriers/ontrac.json';
 import * as s10 from './tracking_number_data/couriers/s10.json';
 import * as ups from './tracking_number_data/couriers/ups.json';
@@ -14,9 +18,9 @@ import {
   Courier, TrackingNumber
 } from './types';
 
-export { amazon, dhl, fedex, ontrac, s10, ups, usps, TrackingCourier, TrackingData, Courier, TrackingNumber };
+export { amazon, canadapost, dhl, dpd, fedex, landmark, lasership, ontrac, s10, ups, usps, TrackingCourier, TrackingData, Courier, TrackingNumber };
 
-export const allCouriers: readonly TrackingCourier[] = [amazon, dhl, fedex, ontrac, s10, ups, usps];
+export const allCouriers: readonly TrackingCourier[] = [amazon, canadapost, dhl, dpd, fedex, landmark, lasership, ontrac, s10, ups, usps];
 
 const additionalCheck = (match: Partial<SerialData>) => (a: Additional): boolean =>
   a.regex_group_name === 'ServiceType'

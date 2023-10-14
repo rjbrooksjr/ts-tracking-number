@@ -1,18 +1,39 @@
 # TS Tracking Number
+
 This package will validate individual tracking numbers or search for valid tracking numbers within given text. It is based off the specifcations in the [jkeen/tracking_number_data](https://github.com/jkeen/tracking_number_data) repository.
 
-Current supported Couriers are USPS, UPS, FedEx, DHL, OnTrac, Amazon Logistics, and national postal services using the S10 standard.
+Current supported couriers are:
+
+- Amazon Logistics
+- Canada Post
+- DHL
+- DPD
+- FedEx
+- Landmark
+- Lasership
+- OnTrac
+- USPS
+- UPS
+- Other national postal services using the S10 standard
 
 ## Install
-`npm install ts-tracking-number`
 
-or
+```bash
+npm install ts-tracking-number`
+```
 
-`yarn add ts-tracking-number`
+```bash
+yarn add ts-tracking-number
+```
+
+```bash
+pnpm add ts-tracking-number
+```
 
 ## Usage
 
 ### Check an invididual tracking number
+
 ```
 import { getTracking } from 'ts-tracking-number';
 
@@ -38,6 +59,7 @@ const tracking = getTracking('9261292700768711948020'); // undefined
 ```
 
 ### Search text for tracking numbers
+
 ```
 import { findTracking } from 'ts-tracking-number';
 
@@ -68,9 +90,10 @@ const tracking = findTracking(text);
 ```
 
 ### Specifying Desired Courier
+
 Optionally you may specify which carrier(s) to retrieve in either `getTracking` or `findTracking` by passing an array of couriers to the function.
 
-Filterable couriers are `amazon`, `dhl`, `fedex`, `ontrac`, `s10`, `ups`, `usps`
+Filterable couriers are `amazon`, `canadapost`, `dhl`, `dpd`, `fedex`, `landmark`, `lasership`, `ontrac`, `s10`, `ups`, `usps`
 
 ```
 import { getTracking, findTracking, ups, fedex } from 'ts-tracking-number';
@@ -86,3 +109,7 @@ getTracking(fedexNumber, [ups]);
 // Search text for only fedex or ups numbers
 findTracking('A bunch of text...', [fedex, ups]);
 ```
+
+### Changelog
+
+- `v1.0.17`: Added Canada Post, Landmark, Lasership, DPD to available couriers
