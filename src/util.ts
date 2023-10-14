@@ -18,9 +18,37 @@ import {
   Courier, TrackingNumber
 } from './types';
 
-export { amazon, canadapost, dhl, dpd, fedex, landmark, lasership, ontrac, s10, ups, usps, TrackingCourier, TrackingData, Courier, TrackingNumber };
+export {
+  amazon,
+  canadapost,
+  dhl,
+  dpd,
+  fedex,
+  landmark,
+  lasership,
+  ontrac,
+  s10,
+  ups,
+  usps,
+  TrackingCourier,
+  TrackingData,
+  Courier,
+  TrackingNumber
+};
 
-export const allCouriers: readonly TrackingCourier[] = [amazon, canadapost, dhl, dpd, fedex, landmark, lasership, ontrac, s10, ups, usps];
+export const allCouriers: readonly TrackingCourier[] = [
+  amazon,
+  canadapost,
+  dhl,
+  dpd,
+  fedex,
+  landmark,
+  lasership,
+  ontrac,
+  s10,
+  ups,
+  usps
+];
 
 const additionalCheck = (match: Partial<SerialData>) => (a: Additional): boolean =>
   a.regex_group_name === 'ServiceType'
