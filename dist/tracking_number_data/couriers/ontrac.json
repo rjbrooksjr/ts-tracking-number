@@ -4,6 +4,7 @@
     "tracking_numbers": [
         {
             "name": "OnTrac",
+            "id": "ontrac_c",
             "regex": "\\s*C\\s*(?<SerialNumber>([0-9]\\s*){13})(?<CheckDigit>[0-9]\\s*)",
             "validation": {
                 "checksum": {
@@ -18,11 +19,11 @@
                     }
                 }
             },
-            "tracking_url": "http://www.ontrac.com/trackingres.asp?tracking_number=%s",
+            "tracking_url": "http://www.ontrac.com/tracking/?number=%s",
             "test_numbers": {
                 "valid": [
                     "C11031500001879",
-                    " C 1 1 0 3 1 5 0 0 0 0 1 8 7 9 ",
+                    "C 110 31 500 00187 9",
                     "C10999911320231",
                     "C11121552953069",
                     "C11121553156000",
@@ -36,6 +37,7 @@
         },
         {
             "name": "OnTrac D",
+            "id": "ontrac_d",
             "regex": "\\s*D\\s*(?<SerialNumber>([0-9]\\s*){13})(?<CheckDigit>[0-9]\\s*)",
             "validation": {
                 "checksum": {
@@ -50,11 +52,12 @@
                     }
                 }
             },
-            "tracking_url": "http://www.ontrac.com/trackingres.asp?tracking_number=%s",
+            "tracking_url": "http://www.ontrac.com/tracking/?number=%s",
             "test_numbers": {
                 "valid": [
                     "D10011354453707",
                     "D10011345983010",
+                    "D 100 113 459 830 10",
                     "D10011342332145"
                 ],
                 "invalid": [

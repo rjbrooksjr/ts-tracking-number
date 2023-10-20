@@ -15,7 +15,7 @@ declare type Checksum = {
 export declare type LookupServiceType = {
     readonly name: string;
     readonly matches_regex: string;
-    readonly description: string;
+    readonly description?: string;
 };
 export declare type MatchServiceType = {
     readonly name: string;
