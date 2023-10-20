@@ -18,7 +18,7 @@
   "types": "./dist/util.d.ts",
   "scripts": {
     "build": "rm -rf ./dist && yarn test && tsc -p ./tsconfig.json",
-    "lint": " yarn eslint --cache --ext .ts src/",
+    "lint": "yarn eslint --cache --ext .ts src/",
     "test": "mocha --exit -r ts-node/register src/**/*.spec.ts"
   },
   "repository": {
