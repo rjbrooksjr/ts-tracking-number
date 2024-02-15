@@ -19,7 +19,7 @@ type Checksum = {
 export type LookupServiceType = {
   readonly name: string;
   readonly matches_regex: string;
-  readonly description: string;
+  readonly description?: string;
 };
 
 export type MatchServiceType = {

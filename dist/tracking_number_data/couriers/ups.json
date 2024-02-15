@@ -4,6 +4,7 @@
     "tracking_numbers": [
         {
             "name": "UPS",
+            "id": "ups",
             "regex": [
                 "\\s*1\\s*Z\\s*(?<SerialNumber>",
                 "(?<ShipperId>(?:[A-Z0-9]\\s*){6,6})",
@@ -138,7 +139,7 @@
         {
             "name": "UPS Waybill",
             "regex": [
-                "\\s*(?<ServiceType>([A-Z]\\s*){1})",
+                "\\s*(?<ServiceType>([AHJKTV]\\s*){1})",
                 "(?<SerialNumber>(?:[0-9]\\s*){9})",
                 "(?<CheckDigit>[0-9]\\s*){1}"
             ],
@@ -173,6 +174,7 @@
             "test_numbers": {
                 "valid": [
                     "K1506235620",
+                    "K 150 623 562 0",
                     "K2479825491",
                     "J4603636537",
                     "V0490119172",
